@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: nodeapp
+spec:
+    replicas: 3
+    template:
+        metadata:
+            labels:
+                name: nodeapp
+        spec:
+            containers:
+                - name: nodeapp
+                  image: vforv/nodeapp
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                  - containerPort: 3000
