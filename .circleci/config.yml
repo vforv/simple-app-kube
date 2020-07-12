@@ -12,7 +12,7 @@ jobs:
             docker tag simple-node:$TAG registry.hefest.io/simple-node
             docker login -u $DOCKER_KUBE_USER -p $DOCKER_KUBE_PASS registry.hefest.io
             docker push registry.hefest.io/simple-node
-            
+          
             ssh -oStrictHostKeyChecking=no -v $VPS_USER@$VPS_IP bash '
             cat .bashrc
             source .bashrc
