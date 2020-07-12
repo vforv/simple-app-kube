@@ -1,6 +1,14 @@
 version: 2
 jobs:
   build:
+    steps:
+      - run: |
+          echo "test"
+  test:
+    steps:
+      - run: |
+          echo "test"
+  deploy:
     docker:
       - image: vforv/np:v1
     steps:
@@ -18,26 +26,11 @@ jobs:
             docker login -u $DOCKER_USER -p $DOCKER_PASS registry.hefest.io
             helm upgrade --install noedapp --set appName=nodeapp --set appImage=registry.hefest.io/simple-node:$TAG ./kube/manifests
             '
-  test:
-    docker:
-      - image: vforv/np:v1
-    steps:
-      - checkout
-      - run: |
-          echo "test"
-  deploy:
-    docker:
-      - image: vforv/np:v1
-    steps:
-      - checkout
-      - run: |
-          echo "test"
 workflows:
   version: 2
   build-test-and-approval-deploy:
     jobs:
       - build
-          context: org-global
       - test:
           requires:
             - build
