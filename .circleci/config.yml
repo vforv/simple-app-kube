@@ -16,7 +16,7 @@ jobs:
             ssh -oStrictHostKeyChecking=no -v $VPS_USER@$VPS_IP bash '
             ls -la
             docker login -u $DOCKER_USER -p $DOCKER_PASS registry.hefest.io
-            helm upgrade --install noedapp --set appName=nodeapp --set appImage=registry.hefest.io/simple-node ./kube/manifests
+            helm upgrade --install nodeapp --set appName=nodeapp --set appImage=registry.hefest.io/simple-node ./kube/manifests
             '
 workflows:
   version: 2
