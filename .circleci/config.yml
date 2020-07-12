@@ -7,7 +7,6 @@ jobs:
       - checkout
       - run: |
           npm i
-          npm run build
   test:
     docker:
       - image: vforv/np:v1
