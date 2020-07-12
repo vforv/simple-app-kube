@@ -5,8 +5,18 @@ jobs:
       - image: vforv/np:v1
     steps:
       - checkout
+      - setup_remote_docker
       - run: |
-          npm i
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker build -t simple-node:$TAG .
+            docker tag simple-node:$TAG registry.hefest.io/simple-node:$TAG
+            docker login -u $DOCKER_KUBE_USER -p $DOCKER_KUBE_PASS registry.hefest.io
+            docker push registry.hefest.io/simple-node:$TAG
+            
+            ssh -oStrictHostKeyChecking=no -v $VPS_USER@$VPS_IP bash '
+            ls -la
+            docker login -u $DOCKER_USER -p $DOCKER_PASS registry.hefest.io
+            helm upgrade --install noedapp --set appName=nodeapp --set appImage=registry.hefest.io/simple-node:$TAG ./kube/manifests'
   test:
     docker:
       - image: vforv/np:v1
@@ -19,18 +29,8 @@ jobs:
       - image: vforv/np:v1
     steps:
       - checkout
-      - setup_remote_docker
       - run: |
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            docker build -t simple-node:$TAG .
-            docker tag simple-node:$TAG registry.hefest.io/simple-node:$TAG
-            docker login -u $DOCKER_KUBE_USER -p $DOCKER_KUBE_PASS registry.hefest.io
-            docker push registry.hefest.io/simple-node:$TAG
-            
-            ssh -oStrictHostKeyChecking=no -v $VPS_USER@$VPS_IP bash '
-            docker login -u $DOCKER_USER -p $DOCKER_PASS registry.hefest.io
-            helm upgrade --install noedapp --set appName=nodeapp --set appImage=registry.hefest.io/simple-node:$TAG ./kube/manifests
-            '
+          echo "test"
 workflows:
   version: 2
   build-test-and-approval-deploy:
