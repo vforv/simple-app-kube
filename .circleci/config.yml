@@ -9,12 +9,12 @@ jobs:
       - run: |
             TAG=0.1.$CIRCLE_BUILD_NUM
             docker build -t simple-node:$TAG .
-            docker tag simple-node:$TAG registry.hefest.io/simple-node
+            docker tag simple-node:$TAG registry.hefest.io/simple-node:1.0.0
             docker login -u $DOCKER_KUBE_USER -p $DOCKER_KUBE_PASS registry.hefest.io
-            docker push registry.hefest.io/simple-node
+            docker push registry.hefest.io/simple-node:1.0.0
           
             ssh -oStrictHostKeyChecking=no -v $VPS_USER@$VPS_IP bash '
-            helm upgrade --install nodeapp --set appName=nodeapp --set appImage=registry.hefest.io/simple-node ./kube/manifests
+            helm upgrade --install nodeapp --set appName=nodeapp --set appImage=registry.hefest.io/simple-node:1.0.0 ./kube/manifests
             '
 workflows:
   version: 2
