@@ -16,8 +16,8 @@ jobs:
             ssh -oStrictHostKeyChecking=no -v $VPS_USER@$VPS_IP bash '
             kubectl -n nodeapp create secret docker-registry regcred \
               --docker-server=registry.hefest.io \
-              --docker-username=${$DOCKER_KUBE_USER} \
-              --docker-password=${DOCKER_KUBE_PASS} \
+              --docker-username=$DOCKER_USER \
+              --docker-password=$DOCKER_PASS \
               --docker-email=vladimirdjukic90@gmail.com
             helm upgrade --install nodeapp --set appName=nodeapp --set appImage=registry.hefest.io/simple-node ./kube/manifests
             '
