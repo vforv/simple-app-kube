@@ -7,7 +7,7 @@ http.createServer(function (request, response) {
     response.writeHead(200, {'Content-Type': 'text/plain'});
     
     // Send the response body as "Hello World"
-    response.end('We have something new\n');
+    response.end(`${process.env.NODE_IP} : ${process.env.POD_IP}`);
  }).listen(3000);
  
  // Console will print the message
